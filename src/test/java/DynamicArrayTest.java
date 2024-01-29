@@ -9,9 +9,11 @@ class DynamicArrayTest {
     @DisplayName("Append to the dynamic array")
     void testAppend() {
         DynamicArray dynamicArray = new DynamicArray();
-        dynamicArray.append(1);
 
-        int[] expectedArray = {1};
+        dynamicArray.append(1);
+        dynamicArray.append(2);
+
+        int[] expectedArray = {1, 2};
 
         assertArrayEquals(expectedArray, dynamicArray.getArray());
     }
