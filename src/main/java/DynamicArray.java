@@ -39,9 +39,9 @@ public class DynamicArray {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 31 * hash + array.length;
-        hash = 31 * hash + nextEmptyIndex;
+        int hash = 3;
+        hash = 5 * hash + array.length;
+        hash = 7 * hash + nextEmptyIndex;
         return hash;
     }
 

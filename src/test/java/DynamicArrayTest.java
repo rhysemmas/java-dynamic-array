@@ -6,6 +6,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DynamicArrayTest {
     @Test
+    @DisplayName("Compare two equal dynamic arrays")
+    void testEqualsAndHashCode() {
+        int[] intArray = new int[]{1, 2, 3};
+        DynamicArray array = new DynamicArray(intArray);
+        DynamicArray identicalArray = new DynamicArray(intArray);
+
+        assertTrue(array.equals(identicalArray));
+        assertTrue(array.hashCode() == identicalArray.hashCode());
+    }
+
+    @Test
     @DisplayName("Append to the dynamic array")
     void testAppend() {
         DynamicArray actualArray = new DynamicArray();
