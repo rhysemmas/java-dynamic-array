@@ -69,6 +69,10 @@ public class DynamicArray {
     }
 
     public void insert(int value, int position) {
+        if (position > nextEmptyIndex) {
+            throw new IndexOutOfBoundsException("Attempting to insert beyond end of array");
+        }
+
         if (nextEmptyIndex >= array.length) {
             grow();
         }
@@ -104,12 +108,11 @@ public class DynamicArray {
             throw new IndexOutOfBoundsException("Array is zero length, can't delete");
         }
 
-        int i = 0;
-        for (int v : array) {
-            if (v == value) {
-                array[i] = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == value) {
+                this.deleteByPosition(i);
+                i--;
             }
-            i++;
         }
     }
 }

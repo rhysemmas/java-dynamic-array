@@ -54,6 +54,14 @@ class DynamicArrayTest {
     }
 
     @Test
+    @DisplayName("Insert past the end of the logical array fails")
+    void testInsertPastEndFails() {
+        DynamicArray dynamicArray = new DynamicArray();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> dynamicArray.insert(2, 1));
+    }
+
+    @Test
     @DisplayName("Delete from the dynamic array by position")
     void testDeleteByPosition() {
         DynamicArray actualArray = new DynamicArray(new int[]{1, 2, 3, 4});
@@ -90,7 +98,7 @@ class DynamicArrayTest {
     @DisplayName("Delete from the dynamic array by value")
     void testDeleteByValue() {
         DynamicArray actualArray = new DynamicArray(new int[]{1, 2, 3, 2, 1});
-        DynamicArray expectedArray = new DynamicArray(new int[]{1, 0, 3, 0, 1});
+        DynamicArray expectedArray = new DynamicArray(new int[]{1, 3, 1});
 
         actualArray.deleteByValue(2);
 
