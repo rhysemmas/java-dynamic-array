@@ -9,6 +9,7 @@ public class DynamicArray {
 
     public DynamicArray(int[] array) {
         this.array = array;
+        nextEmptyIndex = array.length;
     }
 
     @Override
@@ -68,19 +69,16 @@ public class DynamicArray {
     }
 
     public void insert(int value, int position) {
-        int[] newArray = new int[array.length + 1];
-        int j = 0;
-
-        for (int i = 0; i < newArray.length; i++) {
-            if (i == position) {
-                newArray[i] = value;
-            } else {
-                newArray[i] = array[j];
-                j++;
-            }
+        if (nextEmptyIndex >= array.length) {
+            grow();
+        }
+        
+        for (int i = nextEmptyIndex; i > position; i--) {
+            array[i] = array[i - 1];
         }
 
-        array = newArray;
+        array[position] = value;
+        nextEmptyIndex++;
     }
 
     public void deleteByPosition(int position) {
