@@ -1,27 +1,70 @@
 public class DynamicArray {
+    private static final int DEFAULT_ARRAY_BLOCK_SIZE = 8;
     private int[] array;
+    private int nextEmptyIndex;
 
     public DynamicArray() {
-        array = new int[0];
+        array = new int[DEFAULT_ARRAY_BLOCK_SIZE];
     }
 
-    public int[] getArray() {
-        return array;
-    }
-
-    public void setArray(int[] array) {
+    public DynamicArray(int[] array) {
         this.array = array;
     }
 
-    public void append(int value) {
-        int[] newArray = new int[array.length + 1];
-
-        for (int i = 0; i < array.length; i++) {
-            newArray[i] = array[i];
+    @Override
+    public boolean equals(Object o) {
+        // Check if passed object is this object
+        if (o == this) {
+            return true;
         }
 
-        newArray[newArray.length - 1] = value;
+        // Check if o is an instance of DynamicArray. If it isn't then we can't compare it
+        if (!(o instanceof DynamicArray)) {
+            return false;
+        }
+
+        DynamicArray incomingArray = (DynamicArray) o;
+
+        // NOTE: can use Arrays.equals() here instead of doing manually
+        int i = 0;
+        for (int v : incomingArray.array) {
+            if (array[i] != v) {
+                return false;
+            }
+            i++;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + array.length;
+        hash = 31 * hash + nextEmptyIndex;
+        return hash;
+    }
+
+    private void grow() {
+        int[] newArray = new int[array.length + DEFAULT_ARRAY_BLOCK_SIZE];
+
+        int i = 0;
+        for (int element : array) {
+            newArray[i] = element;
+            i++;
+        }
+
+        nextEmptyIndex = array.length;
         array = newArray;
+    }
+
+    public void append(int value) {
+        if (nextEmptyIndex >= array.length) {
+            grow();
+        }
+
+        array[nextEmptyIndex] = value;
+        nextEmptyIndex++;
     }
 
     public void insert(int value, int position) {
