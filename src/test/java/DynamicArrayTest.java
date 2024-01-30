@@ -55,12 +55,33 @@ class DynamicArrayTest {
 
     @Test
     @DisplayName("Delete from the dynamic array by position")
-        // TODO: test deletion from different positions in array
     void testDeleteByPosition() {
-        DynamicArray actualArray = new DynamicArray(new int[]{1, 2});
-        DynamicArray expectedArray = new DynamicArray(new int[]{2});
+        DynamicArray actualArray = new DynamicArray(new int[]{1, 2, 3, 4});
+        DynamicArray expectedArray = new DynamicArray(new int[]{1, 2, 3, 0});
 
-        actualArray.deleteByPosition(0);
+        actualArray.deleteByPosition(3);
+
+        assertTrue(actualArray.equals(expectedArray));
+    }
+
+    @Test
+    @DisplayName("Delete from the dynamic array with a partly filled chunk by position")
+    void testDeleteByPositionPartChunk() {
+        DynamicArray actualArray = new DynamicArray(new int[]{1, 2, 3, 4, 0, 0, 0, 0});
+        DynamicArray expectedArray = new DynamicArray(new int[]{1, 2, 4, 0, 0, 0, 0, 0});
+
+        actualArray.deleteByPosition(2);
+
+        assertTrue(actualArray.equals(expectedArray));
+    }
+
+    @Test
+    @DisplayName("Delete from the dynamic array with a full chunk by position")
+    void testDeleteByPositionFullChunk() {
+        DynamicArray actualArray = new DynamicArray(new int[]{1, 2, 3, 4, 5, 6, 7, 8});
+        DynamicArray expectedArray = new DynamicArray(new int[]{1, 2, 3, 5, 6, 7, 8, 0});
+
+        actualArray.deleteByPosition(3);
 
         assertTrue(actualArray.equals(expectedArray));
     }
@@ -69,7 +90,7 @@ class DynamicArrayTest {
     @DisplayName("Delete from the dynamic array by value")
     void testDeleteByValue() {
         DynamicArray actualArray = new DynamicArray(new int[]{1, 2, 3, 2, 1});
-        DynamicArray expectedArray = new DynamicArray(new int[]{1, 3, 1});
+        DynamicArray expectedArray = new DynamicArray(new int[]{1, 0, 3, 0, 1});
 
         actualArray.deleteByValue(2);
 
@@ -80,7 +101,7 @@ class DynamicArrayTest {
     @Test
     @DisplayName("Deleting from empty dynamic array fails")
     void testDeleteFromEmptyArrayFails() {
-        DynamicArray dynamicArray = new DynamicArray();
+        DynamicArray dynamicArray = new DynamicArray(new int[]{});
 
         assertThrows(IndexOutOfBoundsException.class, () -> dynamicArray.deleteByPosition(0));
     }

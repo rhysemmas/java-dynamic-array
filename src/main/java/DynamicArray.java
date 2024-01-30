@@ -72,7 +72,7 @@ public class DynamicArray {
         if (nextEmptyIndex >= array.length) {
             grow();
         }
-        
+
         for (int i = nextEmptyIndex; i > position; i--) {
             array[i] = array[i - 1];
         }
@@ -86,19 +86,17 @@ public class DynamicArray {
             throw new IndexOutOfBoundsException("Array is zero length, can't delete");
         }
 
-        int[] newArray = new int[array.length - 1];
-        int j = 0;
+        array[position] = 0;
 
-        for (int i = 0; i < array.length; i++) {
-            if (i == position) {
-                continue;
-            } else {
-                newArray[j] = array[i];
+        for (int i = position; i < array.length; i++) {
+            if (i + 1 == nextEmptyIndex) {
+                array[i] = 0;
+                nextEmptyIndex--;
+                break;
             }
-            j++;
-        }
 
-        array = newArray;
+            array[i] = array[i + 1];
+        }
     }
 
     public void deleteByValue(int value) {
@@ -106,26 +104,12 @@ public class DynamicArray {
             throw new IndexOutOfBoundsException("Array is zero length, can't delete");
         }
 
-        int numberOfValuesToDelete = 0;
+        int i = 0;
         for (int v : array) {
             if (v == value) {
-                numberOfValuesToDelete++;
+                array[i] = 0;
             }
+            i++;
         }
-
-        int[] newArray = new int[array.length - numberOfValuesToDelete];
-        int j = 0;
-
-        //NOTE: ignoring suggestion for enhanced for here, as the index is useful to me in assigning the new array
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == value) {
-                continue;
-            } else {
-                newArray[j] = array[i];
-            }
-            j++;
-        }
-
-        array = newArray;
     }
 }
