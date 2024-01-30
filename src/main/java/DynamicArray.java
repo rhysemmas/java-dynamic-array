@@ -1,14 +1,14 @@
-public class DynamicArray {
+public class DynamicArray<T> {
     private static final int DEFAULT_ARRAY_BLOCK_SIZE = 8;
-    private int[] array;
+    private T[] array;
     private int nextEmptyIndex;
 
     public DynamicArray() {
-        array = new int[DEFAULT_ARRAY_BLOCK_SIZE];
+        array = (T[]) new Object[DEFAULT_ARRAY_BLOCK_SIZE];
     }
 
-    public DynamicArray(int[] array) {
-        this.array = array;
+    public DynamicArray(Object[] array) {
+        this.array = (T[]) array;
         nextEmptyIndex = array.length;
     }
 
@@ -19,16 +19,15 @@ public class DynamicArray {
             return true;
         }
 
-        // Check if o is an instance of DynamicArray. If it isn't then we can't compare it
+        // Check if o is an instance of DynamicArray, if it isn't then we can't compare it
         if (!(o instanceof DynamicArray)) {
             return false;
         }
 
-        DynamicArray incomingArray = (DynamicArray) o;
+        DynamicArray<T> incomingArray = (DynamicArray<T>) o;
 
-        // NOTE: can use Arrays.equals() here instead of doing manually
         int i = 0;
-        for (int v : incomingArray.array) {
+        for (T v : incomingArray.array) {
             if (array[i] != v) {
                 return false;
             }
@@ -47,10 +46,10 @@ public class DynamicArray {
     }
 
     private void grow() {
-        int[] newArray = new int[array.length + DEFAULT_ARRAY_BLOCK_SIZE];
+        T[] newArray = (T[]) new Object[array.length + DEFAULT_ARRAY_BLOCK_SIZE];
 
         int i = 0;
-        for (int element : array) {
+        for (T element : array) {
             newArray[i] = element;
             i++;
         }
@@ -59,7 +58,7 @@ public class DynamicArray {
         array = newArray;
     }
 
-    public void append(int value) {
+    public void append(T value) {
         if (nextEmptyIndex >= array.length) {
             grow();
         }
@@ -68,7 +67,7 @@ public class DynamicArray {
         nextEmptyIndex++;
     }
 
-    public void insert(int value, int position) {
+    public void insert(T value, int position) {
         if (position > nextEmptyIndex) {
             throw new IndexOutOfBoundsException("Attempting to insert beyond end of array");
         }
@@ -90,11 +89,11 @@ public class DynamicArray {
             throw new IndexOutOfBoundsException("Array is zero length, can't delete");
         }
 
-        array[position] = 0;
+        array[position] = null;
 
         for (int i = position; i < array.length; i++) {
             if (i + 1 == nextEmptyIndex) {
-                array[i] = 0;
+                array[i] = null;
                 nextEmptyIndex--;
                 break;
             }
@@ -103,7 +102,7 @@ public class DynamicArray {
         }
     }
 
-    public void deleteByValue(int value) {
+    public void deleteByValue(Object value) {
         if (array.length < 1) {
             throw new IndexOutOfBoundsException("Array is zero length, can't delete");
         }
